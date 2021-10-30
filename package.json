@@ -1,0 +1,19 @@
+{
+  "name": "ts-2048",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/Game2048.js",
+  "type": "module",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "node": "tsc && cd lib && node",
+    "doc":"typedoc ./src/Game2048.ts"
+  },
+  "author": "YieldRay",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^16.11.6"
+  }
+}
