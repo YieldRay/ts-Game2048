@@ -3,7 +3,17 @@ const clear = () =>
     process.stdout.write(
         process.platform === "win32" ? "\x1Bc" : "\x1B[2J\x1B[3J\x1B[H"
     );
-
+const showLogoWithScore = () => {
+    process.stdout.write(
+        gameString.logo({
+            l3: "    Your Score:",
+            l4: (" ".repeat(16) + `${state.game.getScore()}`).slice(-12),
+        }) +
+            "\n" +
+            gameString.help() +
+            "\n"
+    );
+};
 const gameString = {
     logo({
         l1 = "",
@@ -38,21 +48,18 @@ const state = {
     },
 };
 process.stdin.on("data", (data) => {
-    let input = data.toString().replace(/\r\n|\r|\n/g, "");
+    let input = data
+        .toString()
+        .replace(/\r\n|\r|\n/g, "")
+        .split("")
+        .filter((e) => e != " ")
+        .join();
     if (input !== "e" && !state.isStarted) return;
     switch (input) {
         case "e":
             if (state.isStarted) {
                 clear();
-                process.stdout.write(
-                    gameString.logo({
-                        l3: "Your Score:",
-                        l4: `${state.game.getScore()}`,
-                    }) +
-                        "\n" +
-                        gameString.help() +
-                        "\n"
-                );
+                showLogoWithScore();
                 state.game.show();
                 console.log(
                     "\x1b[40m \x1b[31m %s \x1b[0m",
@@ -61,7 +68,7 @@ process.stdin.on("data", (data) => {
                 return;
             }
             state.isStarted = true;
-            state.game = new Game2048().resetChessboard();
+            state.game = new Game2048().resetChessboard().fillRandom();
             break;
         case "w":
             state.game.upShift();
@@ -83,9 +90,7 @@ process.stdin.on("data", (data) => {
             break;
         default:
             clear();
-            process.stdout.write(
-                gameString.logo() + "\n" + gameString.help() + "\n"
-            );
+            showLogoWithScore();
             state.game.show();
             console.log(
                 "\x1b[40m \x1b[31m %s \x1b[0m",
@@ -95,14 +100,6 @@ process.stdin.on("data", (data) => {
     }
     clear();
     clear();
-    process.stdout.write(
-        gameString.logo({
-            l3: "    Your Score:",
-            l4: (" ".repeat(16) + `${state.game.getScore()}`).slice(-12),
-        }) +
-            "\n" +
-            gameString.help() +
-            "\n"
-    );
+    showLogoWithScore();
     state.game.fillRandom().show();
 });

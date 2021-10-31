@@ -11,7 +11,12 @@ with a command line game instance
 
 ## play
 
+```
+./play.sh
+```
+
+or
+
 ```sh
 npm run node play
 ```
-
