@@ -16,13 +16,13 @@ class Game2048 {
         this.col = col;
         if (row < 3 || col < 3) throw new Error("At least give 3 row and col");
         for (let i = 0; i < row; i++) {
-            this.chessboard[i] = (new Array(col) as number[]).fill(0);
+            this.chessboard[i] = new Array(col).fill(0);
         }
     }
 
     resetChessboard(): Game2048 {
         for (let i = 0; i < this.row; i++) {
-            this.chessboard[i] = (new Array(this.col) as number[]).fill(0);
+            this.chessboard[i] = new Array(this.col).fill(0);
         }
         return this;
     }
@@ -32,7 +32,7 @@ class Game2048 {
         arr.forEach((col) => {
             if (col.length != this.col) throw new Error("Row does not match");
             col.forEach((e) => {
-                if (!Game2048.isTowPower(e))
+                if (!Game2048.isPowerOfTow(e))
                     throw new Error("Imported chessboard has error");
             });
         });
@@ -92,16 +92,10 @@ class Game2048 {
     /**
      *
      * @param n
-     * @returns whether n is pow(2, anyInt)
+     * @returns whether the number is power of 2
      */
-    static isTowPower(n: number): boolean {
-        let x: number;
-        try {
-            x = Number(BigInt(Math.log2(n)));
-        } catch {
-            return false;
-        }
-        return true;
+    static isPowerOfTow(n: number): boolean {
+        return (n & (n - 1)) == 0;
     }
 
     /**
@@ -141,7 +135,8 @@ class Game2048 {
         let line = copy(arr.filter((e) => e !== 0));
         for (let x = 0; x < line.length && line[x] > 0; x++) {
             if (line[x] && line[x] == line[x + 1]) {
-                line[x] *= 2;
+                // line[x] *= 2;
+                line[x] <<= 1;
                 score += line[x];
                 line[x + 1] = 0;
                 x++; //skip next unnecessary check
@@ -252,11 +247,6 @@ class Game2048 {
 // global util func
 function copy<T>(s: T): T {
     return JSON.parse(JSON.stringify(s));
-}
-
-function arrayRemove(arr: any[], index: number): any[] {
-    arr.splice(index, 1);
-    return arr;
 }
 
 // end of declare

@@ -8,8 +8,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "node": "tsc && cd lib && node",
-    "doc":"typedoc ./src/Game2048.ts"
+    "node": "npx tsc && cd lib && node",
+    "doc": "npx typedoc ./src/Game2048.ts"
   },
   "author": "YieldRay",
   "license": "ISC",
