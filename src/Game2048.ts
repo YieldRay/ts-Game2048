@@ -24,6 +24,7 @@ class Game2048 {
         for (let i = 0; i < this.row; i++) {
             this.chessboard[i] = new Array(this.col).fill(0);
         }
+        this.score = 0;
         return this;
     }
 
@@ -32,8 +33,7 @@ class Game2048 {
         arr.forEach((col) => {
             if (col.length != this.col) throw new Error("Row does not match");
             col.forEach((e) => {
-                if (!Game2048.isPowerOfTow(e))
-                    throw new Error("Imported chessboard has error");
+                if (!Game2048.isPowerOfTow(e)) throw new Error("Imported chessboard has error");
             });
         });
 
@@ -117,9 +117,7 @@ class Game2048 {
         }
         line = line.filter((e) => e !== 0);
         return {
-            array: new Array(initialLength - line.length)
-                .fill(0)
-                .concat(...line),
+            array: new Array(initialLength - line.length).fill(0).concat(...line),
             score,
         };
     }
@@ -144,9 +142,7 @@ class Game2048 {
         }
         line = line.filter((e) => e !== 0);
         return {
-            array: line.concat(
-                ...new Array(initialLength - line.length).fill(0)
-            ),
+            array: line.concat(...new Array(initialLength - line.length).fill(0)),
             score,
         };
     }
@@ -215,9 +211,7 @@ class Game2048 {
         let out = "";
         for (let i = 0; i < this.row; i++) {
             for (let j = 0; j < this.col; j++) {
-                out += (" ".repeat(5) + this.chessboard[i][j].toString()).slice(
-                    -5
-                );
+                out += (" ".repeat(5) + this.chessboard[i][j].toString()).slice(-5);
             }
             out += "\n\n";
         }
@@ -236,11 +230,10 @@ class Game2048 {
      * @param pos2 [x, y] chessboard[x][y]
      */
     protected swap(pos1: [number, number], pos2: [number, number]): void {
-        [this.chessboard[pos1[0]][pos1[1]], this.chessboard[pos2[0]][pos2[1]]] =
-            [
-                this.chessboard[pos2[0]][pos2[1]],
-                this.chessboard[pos1[0]][pos1[1]],
-            ];
+        [this.chessboard[pos1[0]][pos1[1]], this.chessboard[pos2[0]][pos2[1]]] = [
+            this.chessboard[pos2[0]][pos2[1]],
+            this.chessboard[pos1[0]][pos1[1]],
+        ];
     }
 }
 
